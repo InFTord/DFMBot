@@ -39,7 +39,7 @@ namespace DFMBot
             {
                 StringPrefixes = new[] { "<" },
                 EnableMentionPrefix = false,
-                EnableDms = false,
+                EnableDms = true,
             };
 
             this.Client = new DiscordClient(cfg);

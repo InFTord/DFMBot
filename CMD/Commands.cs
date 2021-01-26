@@ -39,10 +39,12 @@ public class PingModule : BaseCommandModule
         embed.Timestamp = ctx.Message.Timestamp;
 
 
-        var msg = await new DiscordMessageBuilder()
+        var msg = new DiscordMessageBuilder()
         .WithEmbed(embed: embed)
-        .WithReply(ctx.Message.Id)
         .SendAsync(ctx.Channel);
+
+
+        
     }
 
     [Command("user"), Description("Показывает информацию об определенном юзере"), Aliases("юзеринфо", "профиль", "profile", "userinfo", "юзер")]
@@ -53,12 +55,14 @@ public class PingModule : BaseCommandModule
 
         var Embed = new DiscordEmbedBuilder();
 
+        Embed.Timestamp = ctx.Message.Timestamp;
         Embed.Color = member.Color;
         Embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail { Url = $"{member.AvatarUrl}" };
         Embed.AddField(name: "Имя юзера:", value: $"{member.Mention}({member.DisplayName})");
-        Embed.AddField(name: "Айди:", value: $"{member.Id}");
+        Embed.Footer = new DiscordEmbedBuilder.EmbedFooter { Text = $"ИД юзера: {member.Id}", IconUrl = $"{member.AvatarUrl}" };
         Embed.AddField(name: "Дата создания юзера:", value: $"{member.CreationTimestamp}");
         Embed.AddField(name: "Дата захода юзера на сервер:", value: $"{member.JoinedAt}");
+
 
 
         var msg = await new DiscordMessageBuilder()
