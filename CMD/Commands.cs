@@ -55,6 +55,14 @@ public class PingModule : BaseCommandModule
 
         var Embed = new DiscordEmbedBuilder();
 
+        if (member.IsOwner)
+            Embed.Description += "Данный участник является владельцем сервера!\n";
+        if (member.IsBot)
+            Embed.Description += "Данный участник является ботом!\n";
+        if (member.IsCurrent)
+            Embed.Description += "Данный участник является самим ботом, через который вы смотрите юзеринфо\n";
+
+
         Embed.Timestamp = ctx.Message.Timestamp;
         Embed.Color = member.Color;
         Embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail { Url = $"{member.AvatarUrl}" };
@@ -80,18 +88,48 @@ public class PingModule : BaseCommandModule
 
         var Embed = new DiscordEmbedBuilder();
 
+        if (member.IsOwner)
+            Embed.Description += "Данный участник является владельцем сервера!\n";
+        if (member.IsBot)
+            Embed.Description += "Данный участник является ботом!\n";
+
+
+        Embed.Description = "";
         Embed.Color = member.Color;
         Embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail { Url = $"{member.AvatarUrl}" };
         Embed.AddField(name: "Имя юзера:", value: $"{member.Mention}({member.DisplayName})");
         Embed.Footer = new DiscordEmbedBuilder.EmbedFooter { Text = $"ИД юзера: {member.Id}", IconUrl = $"{member.AvatarUrl}" };
         Embed.AddField(name: "Дата создания юзера:", value: $"{member.CreationTimestamp}");
         Embed.AddField(name: "Дата захода юзера на сервер:", value: $"{member.JoinedAt}");
+        ;
+        
         
 
         var msg = await new DiscordMessageBuilder()
         .WithEmbed(embed: Embed)
         .SendAsync(ctx.Channel);
 
+    }
+
+    [RequireGuild]
+    [Command("сервер")]
+    public async Task ServerCommand(CommandContext ctx)
+    {
+        DiscordGuild guild = ctx.Guild;
+
+        var embed = new DiscordEmbedBuilder();
+
+      
+
+        embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail { Url = guild.IconUrl };
+        embed.AddField(name: "Название сервера:", value: guild.Name);
+        embed.AddField(name: "Владелец сервера:", value: guild.Owner.Mention);
+        embed.AddField(name: "Дата создания сервера", value: $"{guild.CreationTimestamp}");
+        embed.AddField(name: "Количество участников на сервере:", value: $"{guild.MemberCount}");
+
+        var msg = await new DiscordMessageBuilder()
+        .WithEmbed(embed: embed)
+        .SendAsync(ctx.Channel);
     }
 
 }
