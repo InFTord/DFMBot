@@ -76,7 +76,9 @@ public class PingModule : BaseCommandModule
         Embed.Color = member.Color;
         Embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail { Url = $"{member.AvatarUrl}" };
         Embed.Footer = new DiscordEmbedBuilder.EmbedFooter { Text = "тест.." };
-        Embed.AddField(name: "Юзер:", value: $"{member.Mention}");
+        Embed.AddField(name: "Юзер:", value: $"{member.Mention}({member.DisplayName})");
+        Embed.AddField(name: "Айди:", value: $"{member.Id}");
+        Embed.AddField(name: "Юзер:", value: $"{member.Roles}");
 
         var msg = await new DiscordMessageBuilder()
         .WithEmbed(embed: Embed)
