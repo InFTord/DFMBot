@@ -45,8 +45,8 @@ public class PingModule : BaseCommandModule
         .SendAsync(ctx.Channel);
     }
 
-    [Command("user")]
-    public async Task UserCommand(CommandContext ctx, DiscordMember member)
+    [Command("user"), Description("Показывает информацию об определенном юзере"), Aliases("юзеринфо", "профиль", "profile", "userinfo", "юзер")]
+    public async Task UserCommand(CommandContext ctx, [Description("Юзер")] DiscordMember member)
     {
 
         await ctx.TriggerTypingAsync();
@@ -55,12 +55,15 @@ public class PingModule : BaseCommandModule
 
         Embed.Color = member.Color;
         Embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail { Url = $"{member.AvatarUrl}" };
-        Embed.AddField(name: "Юзер:", value: $"{member.Mention}");
+        Embed.AddField(name: "Имя юзера:", value: $"{member.Mention}({member.DisplayName})");
+        Embed.AddField(name: "Айди:", value: $"{member.Id}");
+        Embed.AddField(name: "Дата создания юзера:", value: $"{member.CreationTimestamp}");
+        Embed.AddField(name: "Дата захода юзера на сервер:", value: $"{member.JoinedAt}");
+
 
         var msg = await new DiscordMessageBuilder()
         .WithEmbed(embed: Embed)
         .SendAsync(ctx.Channel);
-
     }
 
     [Command("user")]
@@ -75,10 +78,11 @@ public class PingModule : BaseCommandModule
 
         Embed.Color = member.Color;
         Embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail { Url = $"{member.AvatarUrl}" };
-        Embed.Footer = new DiscordEmbedBuilder.EmbedFooter { Text = "тест.." };
-        Embed.AddField(name: "Юзер:", value: $"{member.Mention}({member.DisplayName})");
-        Embed.AddField(name: "Айди:", value: $"{member.Id}");
-        Embed.AddField(name: "Юзер:", value: $"{member.Roles}");
+        Embed.AddField(name: "Имя юзера:", value: $"{member.Mention}({member.DisplayName})");
+        Embed.Footer = new DiscordEmbedBuilder.EmbedFooter { Text = $"ИД юзера: {member.Id}", IconUrl = $"{member.AvatarUrl}" };
+        Embed.AddField(name: "Дата создания юзера:", value: $"{member.CreationTimestamp}");
+        Embed.AddField(name: "Дата захода юзера на сервер:", value: $"{member.JoinedAt}");
+        
 
         var msg = await new DiscordMessageBuilder()
         .WithEmbed(embed: Embed)
